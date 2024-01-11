@@ -105,7 +105,7 @@ namespace BookStoreApp.API.Controllers
             catch (DbUpdateConcurrencyException)
             {
 
-                if (!AuthorExists(id))
+                if (!await AuthorExists(id))
                 {
                     _logger.LogError("Author not found in AuthorsController.PutAuthor()");
                     return NotFound();
@@ -174,9 +174,9 @@ namespace BookStoreApp.API.Controllers
             }
         }
 
-        private bool AuthorExists(int id)
+        private async Task<bool> AuthorExists(int id)
         {
-            return (_context.Authors?.Any(e => e.Id == id)).GetValueOrDefault();
+            return await _context.Authors.AnyAsync(e => e.Id == id);
         }
     }
 }
