@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreApp.API.Data;
 
-public partial class BookstoreContext : IdentityDbContext
+public partial class BookstoreContext : IdentityDbContext<ApiUser>
 {
     public BookstoreContext()
     {
@@ -19,6 +19,7 @@ public partial class BookstoreContext : IdentityDbContext
     public virtual DbSet<Author> Authors { get; set; }
 
     public virtual DbSet<Book> Books { get; set; }
+
 
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

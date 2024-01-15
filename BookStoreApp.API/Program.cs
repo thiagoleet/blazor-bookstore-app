@@ -12,7 +12,7 @@ var connString = builder.Configuration.GetConnectionString("BookStoreAppDbConnec
 builder.Services.AddDbContext<BookstoreContext>(options => options.UseSqlServer(connString));
 
 // Add Identity
-builder.Services.AddIdentityCore<IdentityUser>()
+builder.Services.AddIdentityCore<ApiUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BookstoreContext>();
 
