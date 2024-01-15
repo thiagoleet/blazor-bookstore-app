@@ -71,7 +71,7 @@ public partial class BookstoreContext : IdentityDbContext<ApiUser>
                            Id = "6795541e-56df-413c-9806-75bbc76180b4",
                            Email = "admin@bookstore.com",
                            NormalizedEmail = "ADMIN@BOOKSTORE.COM",
-                           Username = "admin@bookstore.com",
+                           UserName = "admin@bookstore.com",
                            NormalizedUserName = "ADMIN@BOOKSTORE.COM",
                            FirstName = "System",
                            LastName = "Administrator",
@@ -80,12 +80,12 @@ public partial class BookstoreContext : IdentityDbContext<ApiUser>
                        new ApiUser
                        {
                            Id = "4d154ce2-c7e8-43eb-9abf-e35319e9d9f6",
-                           Email = "admin@bookstore.com",
-                           NormalizedEmail = "ADMIN@BOOKSTORE.COM",
-                           Username = "admin@bookstore.com",
-                           NormalizedUserName = "ADMIN@BOOKSTORE.COM",
+                           Email = "user@bookstore.com",
+                           NormalizedEmail = "USER@BOOKSTORE.COM",
+                           UserName = "user@bookstore.com",
+                           NormalizedUserName = "USER@BOOKSTORE.COM",
                            FirstName = "System",
-                           LastName = "Administrator",
+                           LastName = "User",
                            PasswordHash = hasher.HashPassword(null, "P@ssw0rd1"),
                        });
 

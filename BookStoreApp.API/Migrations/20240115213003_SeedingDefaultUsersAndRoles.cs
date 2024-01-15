@@ -7,34 +7,11 @@
 namespace BookStoreApp.API.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedDefaultUsersAndRoles : Migration
+    public partial class SeedingDefaultUsersAndRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "UserName",
-                table: "AspNetUsers",
-                newName: "Username");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Username",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(256)",
-                oldMaxLength: 256,
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserName",
-                table: "AspNetUsers",
-                type: "nvarchar(256)",
-                maxLength: 256,
-                nullable: true);
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -46,11 +23,11 @@ namespace BookStoreApp.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Username" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "4d154ce2-c7e8-43eb-9abf-e35319e9d9f6", 0, "efcbac51-8b5b-4720-940d-73cc7175ec6c", "admin@bookstore.com", false, "System", "Administrator", false, null, "ADMIN@BOOKSTORE.COM", "ADMIN@BOOKSTORE.COM", "AQAAAAIAAYagAAAAENV7JMR8D9YZ1StnDeBpoTflK2TY4K4qJ0eLQWoneGfiDoqedDWDZu8uYq9bfc6BGg==", null, false, "54b40067-9eb5-4775-8ae3-dcc8c5a7279e", false, null, "admin@bookstore.com" },
-                    { "6795541e-56df-413c-9806-75bbc76180b4", 0, "cb4dbba1-d323-443b-a791-81bfa56e4cbf", "admin@bookstore.com", false, "System", "Administrator", false, null, "ADMIN@BOOKSTORE.COM", "ADMIN@BOOKSTORE.COM", "AQAAAAIAAYagAAAAEH/5g4LaXxRwtICk+HoUfTRmRUX3XfAtRLZ7yu4F0WrPyTMDwurzQR01WKHeNFh+OA==", null, false, "4c2bc8d2-c590-43ee-9a8b-583aa3f8a69e", false, null, "admin@bookstore.com" }
+                    { "4d154ce2-c7e8-43eb-9abf-e35319e9d9f6", 0, "ebfa628d-0c56-4968-8c78-8c2d8c929733", "user@bookstore.com", false, "System", "User", false, null, "USER@BOOKSTORE.COM", "USER@BOOKSTORE.COM", "AQAAAAIAAYagAAAAELNorPDCXv+6giQoY9f9GTrpnAzwPwRRm4+jBYwGrn9czfiZIZFttu81eVbj24kqCQ==", null, false, "43a15983-a2c0-40a7-9770-d38bd7df1fb7", false, "user@bookstore.com" },
+                    { "6795541e-56df-413c-9806-75bbc76180b4", 0, "6d5840e1-7396-4155-89cb-6e36f65f660f", "admin@bookstore.com", false, "System", "Administrator", false, null, "ADMIN@BOOKSTORE.COM", "ADMIN@BOOKSTORE.COM", "AQAAAAIAAYagAAAAEA07kPiP7pQ0Z06b//DB6fBZiRF7rw7rgYHjnADCrQjGSeY0Ske3olp2AudfRhbueg==", null, false, "326f3002-9486-47e6-b4d1-60ae421621ba", false, "admin@bookstore.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -95,24 +72,6 @@ namespace BookStoreApp.API.Migrations
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "6795541e-56df-413c-9806-75bbc76180b4");
-
-            migrationBuilder.DropColumn(
-                name: "UserName",
-                table: "AspNetUsers");
-
-            migrationBuilder.RenameColumn(
-                name: "Username",
-                table: "AspNetUsers",
-                newName: "UserName");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserName",
-                table: "AspNetUsers",
-                type: "nvarchar(256)",
-                maxLength: 256,
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStoreApp.API.Migrations
 {
     [DbContext(typeof(BookstoreContext))]
-    [Migration("20240115212319_SeedDefaultUsersAndRoles")]
-    partial class SeedDefaultUsersAndRoles
+    [Migration("20240115213003_SeedingDefaultUsersAndRoles")]
+    partial class SeedingDefaultUsersAndRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,10 +85,6 @@ namespace BookStoreApp.API.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -106,7 +102,7 @@ namespace BookStoreApp.API.Migrations
                         {
                             Id = "6795541e-56df-413c-9806-75bbc76180b4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb4dbba1-d323-443b-a791-81bfa56e4cbf",
+                            ConcurrencyStamp = "6d5840e1-7396-4155-89cb-6e36f65f660f",
                             Email = "admin@bookstore.com",
                             EmailConfirmed = false,
                             FirstName = "System",
@@ -114,29 +110,29 @@ namespace BookStoreApp.API.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@BOOKSTORE.COM",
                             NormalizedUserName = "ADMIN@BOOKSTORE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH/5g4LaXxRwtICk+HoUfTRmRUX3XfAtRLZ7yu4F0WrPyTMDwurzQR01WKHeNFh+OA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA07kPiP7pQ0Z06b//DB6fBZiRF7rw7rgYHjnADCrQjGSeY0Ske3olp2AudfRhbueg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4c2bc8d2-c590-43ee-9a8b-583aa3f8a69e",
+                            SecurityStamp = "326f3002-9486-47e6-b4d1-60ae421621ba",
                             TwoFactorEnabled = false,
-                            Username = "admin@bookstore.com"
+                            UserName = "admin@bookstore.com"
                         },
                         new
                         {
                             Id = "4d154ce2-c7e8-43eb-9abf-e35319e9d9f6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "efcbac51-8b5b-4720-940d-73cc7175ec6c",
-                            Email = "admin@bookstore.com",
+                            ConcurrencyStamp = "ebfa628d-0c56-4968-8c78-8c2d8c929733",
+                            Email = "user@bookstore.com",
                             EmailConfirmed = false,
                             FirstName = "System",
-                            LastName = "Administrator",
+                            LastName = "User",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@BOOKSTORE.COM",
-                            NormalizedUserName = "ADMIN@BOOKSTORE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENV7JMR8D9YZ1StnDeBpoTflK2TY4K4qJ0eLQWoneGfiDoqedDWDZu8uYq9bfc6BGg==",
+                            NormalizedEmail = "USER@BOOKSTORE.COM",
+                            NormalizedUserName = "USER@BOOKSTORE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAELNorPDCXv+6giQoY9f9GTrpnAzwPwRRm4+jBYwGrn9czfiZIZFttu81eVbj24kqCQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "54b40067-9eb5-4775-8ae3-dcc8c5a7279e",
+                            SecurityStamp = "43a15983-a2c0-40a7-9770-d38bd7df1fb7",
                             TwoFactorEnabled = false,
-                            Username = "admin@bookstore.com"
+                            UserName = "user@bookstore.com"
                         });
                 });
 
