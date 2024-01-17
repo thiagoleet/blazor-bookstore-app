@@ -1,6 +1,4 @@
-using BookStoreApp.Blazor.Server.Services.Base;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using BookStoreApp.Blazor.Server.UI.Services.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 

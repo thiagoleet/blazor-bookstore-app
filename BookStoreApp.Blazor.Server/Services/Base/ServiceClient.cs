@@ -16,7 +16,7 @@
 #pragma warning disable 8604 // Disable "CS8604 Possible null reference argument for parameter"
 #pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
 
-namespace BookStoreApp.Blazor.Server.Services.Base
+namespace BookStoreApp.Blazor.Server.UI.Services.Base
 {
     using System = global::System;
 
