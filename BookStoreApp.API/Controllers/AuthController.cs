@@ -18,18 +18,18 @@ namespace BookStoreApp.API.Controllers
     public class AuthController : ControllerBase
 
     {
-        private readonly ILogger<AuthController> _logger;
-        private readonly IMapper _mapper;
-        private readonly UserManager<ApiUser> _userManager;
-        private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthController> logger;
+        private readonly IMapper mapper;
+        private readonly UserManager<ApiUser> userManager;
+        private readonly IConfiguration configuration;
 
 
         public AuthController(ILogger<AuthController> logger, IMapper mapper, UserManager<ApiUser> userManager, IConfiguration configuration)
         {
-            this._logger = logger;
-            this._mapper = mapper;
-            this._userManager = userManager;
-            this._configuration = configuration;
+            this.logger = logger;
+            this.mapper = mapper;
+            this.userManager = userManager;
+            this.configuration = configuration;
         }
 
         [HttpPost]
@@ -44,13 +44,13 @@ namespace BookStoreApp.API.Controllers
                     return BadRequest("Insuficient Data Provided");
                 }
 
-                _logger.LogInformation("Registration Attempt for {Email}", userDto.Email);
+                logger.LogInformation("Registration Attempt for {Email}", userDto.Email);
 
-                var user = this._mapper.Map<ApiUser>(userDto);
+                var user = this.mapper.Map<ApiUser>(userDto);
                 user.UserName = userDto.Email;
 
 
-                var result = await this._userManager.CreateAsync(user, userDto.Password);
+                var result = await this.userManager.CreateAsync(user, userDto.Password);
 
                 // Creating a new user
                 if (result.Succeeded == false)
@@ -64,14 +64,14 @@ namespace BookStoreApp.API.Controllers
                 }
 
                 // Setting a role
-                await _userManager.AddToRoleAsync(user, "User");
+                await userManager.AddToRoleAsync(user, "User");
 
 
                 return Accepted();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthController.Register()");
+                logger.LogError(ex, "Error in AuthController.Register()");
                 return Problem(ex.Message);
             }
         }
@@ -80,12 +80,12 @@ namespace BookStoreApp.API.Controllers
         [Route("login")]
         public async Task<ActionResult<AuthResponse>> Login(LoginUserDto userDto)
         {
-            _logger.LogInformation("Login Attempt for {Email}", userDto.Email);
+            logger.LogInformation("Login Attempt for {Email}", userDto.Email);
 
             try
             {
-                var user = await _userManager.FindByEmailAsync(userDto.Email);
-                var passwordValid = await _userManager.CheckPasswordAsync(user, userDto.Password);
+                var user = await userManager.FindByEmailAsync(userDto.Email);
+                var passwordValid = await userManager.CheckPasswordAsync(user, userDto.Password);
 
                 if (user == null || passwordValid == false)
                 {
@@ -105,7 +105,7 @@ namespace BookStoreApp.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthController.Login()");
+                logger.LogError(ex, "Error in AuthController.Login()");
                 return Problem(ex.Message);
             }
         }
@@ -113,13 +113,13 @@ namespace BookStoreApp.API.Controllers
 
         private async Task<string> GenerateToken(ApiUser user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await userManager.GetRolesAsync(user);
             var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
 
-            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userClaims = await userManager.GetClaimsAsync(user);
 
             var claims = new List<Claim>
             {
@@ -132,10 +132,10 @@ namespace BookStoreApp.API.Controllers
             .Union(roleClaims);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
+                issuer: configuration["JwtSettings:Issuer"],
+                audience: configuration["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(Convert.ToInt32(_configuration["JwtSettings:Duration"])),
+                expires: DateTime.Now.AddHours(Convert.ToInt32(configuration["JwtSettings:Duration"])),
                 signingCredentials: credentials
             );
 
