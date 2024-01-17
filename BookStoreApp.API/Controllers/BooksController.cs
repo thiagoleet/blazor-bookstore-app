@@ -18,15 +18,15 @@ namespace BookStoreApp.API.Controllers
     [Authorize]
     public class BooksController : ControllerBase
     {
-        private readonly BookstoreContext _context;
-        private readonly IMapper _mapper;
-        private readonly ILogger<BooksController> _logger;
+        private readonly BookstoreContext context;
+        private readonly IMapper mapper;
+        private readonly ILogger<BooksController> logger;
 
         public BooksController(BookstoreContext context, IMapper mapper, ILogger<BooksController> logger)
         {
-            _context = context;
-            _logger = logger;
-            _mapper = mapper;
+            this.context = context;
+            this.logger = logger;
+            this.mapper = mapper;
         }
 
         // GET: api/Books
@@ -35,14 +35,14 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Books == null)
+                if (context.Books == null)
                 {
                     return NotFound();
                 }
 
-                var bookDtos = await _context.Books
+                var bookDtos = await context.Books
                  .Include(q => q.Author)
-                 .ProjectTo<BookReadOnlyDto>(_mapper.ConfigurationProvider)
+                 .ProjectTo<BookReadOnlyDto>(mapper.ConfigurationProvider)
                  .ToListAsync();
 
                 return Ok(bookDtos);
@@ -50,7 +50,7 @@ namespace BookStoreApp.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in BooksController.GetBooks()");
+                logger.LogError(ex, "Error in BooksController.GetBooks()");
                 return Problem(ex.Message);
             }
         }
@@ -61,14 +61,14 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Books == null)
+                if (context.Books == null)
                 {
                     return NotFound();
                 }
 
-                var book = await _context.Books
+                var book = await context.Books
                     .Include(q => q.Author)
-                    .ProjectTo<BookDetailsDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<BookDetailsDto>(mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(q => q.Id == id);
 
                 if (book == null)
@@ -82,7 +82,7 @@ namespace BookStoreApp.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in BooksController.GetBook()");
+                logger.LogError(ex, "Error in BooksController.GetBook()");
                 return Problem(ex.Message);
             }
         }
@@ -100,30 +100,30 @@ namespace BookStoreApp.API.Controllers
             }
 
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await context.Books.FindAsync(id);
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            _mapper.Map(bookDto, book);
-            _context.Entry(book).State = EntityState.Modified;
+            mapper.Map(bookDto, book);
+            context.Entry(book).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!await BookExists(id))
                 {
-                    _logger.LogError("Book not found in BooksController.PutBook()");
+                    logger.LogError("Book not found in BooksController.PutBook()");
                     return NotFound();
                 }
                 else
                 {
-                    _logger.LogError("Error in BooksController.PutBook()");
+                    logger.LogError("Error in BooksController.PutBook()");
                     throw;
                 }
             }
@@ -140,21 +140,21 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Books == null)
+                if (context.Books == null)
                 {
                     return Problem("Entity set 'BookstoreContext.Books'  is null.");
                 }
 
-                var book = _mapper.Map<Book>(bookDto);
+                var book = mapper.Map<Book>(bookDto);
 
-                _context.Books.Add(book);
-                await _context.SaveChangesAsync();
+                context.Books.Add(book);
+                await context.SaveChangesAsync();
 
                 return CreatedAtAction("GetBook", new { id = book.Id }, book);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in BooksController.PostBook()");
+                logger.LogError(ex, "Error in BooksController.PostBook()");
                 return Problem(ex.Message);
             }
         }
@@ -167,31 +167,31 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Books == null)
+                if (context.Books == null)
                 {
                     return NotFound();
                 }
-                var book = await _context.Books.FindAsync(id);
+                var book = await context.Books.FindAsync(id);
                 if (book == null)
                 {
                     return NotFound();
                 }
 
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
+                context.Books.Remove(book);
+                await context.SaveChangesAsync();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in BooksController.DeleteBook()");
+                logger.LogError(ex, "Error in BooksController.DeleteBook()");
                 return Problem(ex.Message);
             }
         }
 
         private async Task<bool> BookExists(int id)
         {
-            return await _context.Books.AnyAsync(e => e.Id == id);
+            return await context.Books.AnyAsync(e => e.Id == id);
         }
     }
 }

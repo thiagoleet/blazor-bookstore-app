@@ -18,15 +18,15 @@ namespace BookStoreApp.API.Controllers
 
     public class AuthorsController : ControllerBase
     {
-        private readonly BookstoreContext _context;
-        private readonly IMapper _mapper;
-        private readonly ILogger<AuthorsController> _logger;
+        private readonly BookstoreContext context;
+        private readonly IMapper mapper;
+        private readonly ILogger<AuthorsController> logger;
 
         public AuthorsController(BookstoreContext context, IMapper mapper, ILogger<AuthorsController> logger)
         {
-            _context = context;
-            _mapper = mapper;
-            _logger = logger;
+            this.context = context;
+            this.mapper = mapper;
+            this.logger = logger;
         }
 
         // GET: api/Authors
@@ -36,19 +36,19 @@ namespace BookStoreApp.API.Controllers
 
             try
             {
-                if (_context.Authors == null)
+                if (context.Authors == null)
                 {
                     return NotFound();
                 }
 
-                var authors = await _context.Authors.ToListAsync();
-                var authorsDto = _mapper.Map<IEnumerable<AuthorReadOnlyDto>>(authors);
+                var authors = await context.Authors.ToListAsync();
+                var authorsDto = mapper.Map<IEnumerable<AuthorReadOnlyDto>>(authors);
 
                 return Ok(authorsDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthorsController.GetAuthors()");
+                logger.LogError(ex, "Error in AuthorsController.GetAuthors()");
                 return Problem(ex.Message);
             }
         }
@@ -59,24 +59,24 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Authors == null)
+                if (context.Authors == null)
                 {
                     return NotFound();
                 }
-                var author = await _context.Authors.FindAsync(id);
+                var author = await context.Authors.FindAsync(id);
 
                 if (author == null)
                 {
                     return NotFound();
                 }
 
-                var authorDto = _mapper.Map<AuthorReadOnlyDto>(author);
+                var authorDto = mapper.Map<AuthorReadOnlyDto>(author);
 
                 return Ok(authorDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthorsController.GetAuthor()");
+                logger.LogError(ex, "Error in AuthorsController.GetAuthor()");
                 return Problem(ex.Message);
             }
         }
@@ -92,31 +92,31 @@ namespace BookStoreApp.API.Controllers
                 return BadRequest();
             }
 
-            var author = await _context.Authors.FindAsync(id);
+            var author = await context.Authors.FindAsync(id);
 
             if (author == null)
             {
                 return NotFound();
             }
 
-            _mapper.Map(authorDto, author);
-            _context.Entry(author).State = EntityState.Modified;
+            mapper.Map(authorDto, author);
+            context.Entry(author).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
 
                 if (!await AuthorExists(id))
                 {
-                    _logger.LogError("Author not found in AuthorsController.PutAuthor()");
+                    logger.LogError("Author not found in AuthorsController.PutAuthor()");
                     return NotFound();
                 }
                 else
                 {
-                    _logger.LogError("Error in AuthorsController.PutAuthor()");
+                    logger.LogError("Error in AuthorsController.PutAuthor()");
                     throw;
                 }
             }
@@ -133,20 +133,20 @@ namespace BookStoreApp.API.Controllers
 
             try
             {
-                if (_context.Authors == null)
+                if (context.Authors == null)
                 {
                     return Problem("Entity set 'BookstoreContext.Authors'  is null.");
                 }
 
-                var author = _mapper.Map<Author>(authorDto);
-                _context.Authors.Add(author);
-                await _context.SaveChangesAsync();
+                var author = mapper.Map<Author>(authorDto);
+                context.Authors.Add(author);
+                await context.SaveChangesAsync();
 
                 return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthorsController.PostAuthor()");
+                logger.LogError(ex, "Error in AuthorsController.PostAuthor()");
                 return Problem(ex.Message);
             }
         }
@@ -159,31 +159,31 @@ namespace BookStoreApp.API.Controllers
         {
             try
             {
-                if (_context.Authors == null)
+                if (context.Authors == null)
                 {
                     return NotFound();
                 }
-                var author = await _context.Authors.FindAsync(id);
+                var author = await context.Authors.FindAsync(id);
                 if (author == null)
                 {
                     return NotFound();
                 }
 
-                _context.Authors.Remove(author);
-                await _context.SaveChangesAsync();
+                context.Authors.Remove(author);
+                await context.SaveChangesAsync();
 
                 return NoContent();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in AuthorsController.DeleteAuthor()");
+                logger.LogError(ex, "Error in AuthorsController.DeleteAuthor()");
                 return Problem(ex.Message);
             }
         }
 
         private async Task<bool> AuthorExists(int id)
         {
-            return await _context.Authors.AnyAsync(e => e.Id == id);
+            return await context.Authors.AnyAsync(e => e.Id == id);
         }
     }
 }
